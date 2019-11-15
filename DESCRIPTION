@@ -1,0 +1,16 @@
+Package: TweedieUtils
+Type: Package
+Title: Some useful functions for running tweedie models
+Version: 0.1.0
+Author: Chao Guo
+Maintainer: Chao Guo <cguo127@outlook.com>
+Description: TweedieUtils contains some useful functions for running a variety of tweedie models. It is planned to support tweedie GLM (with Wald and LR significance test), penalized tweedie GLM with elastic net, and boosting with tweedie loss.
+License: GPL (>=2)
+Encoding: UTF-8
+LazyData: true
+Imports: 
+    tweedie,
+    statmod
+RoxygenNote: 6.1.1
+Suggests: 
+    testthat (>= 2.1.0)

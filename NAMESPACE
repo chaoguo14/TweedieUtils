@@ -1,0 +1,4 @@
+exportPattern("^[[:alpha:]]+")
+
+importFrom("stats", "as.formula", "glm", "optimize")
+S3method(summary, tweedie_glm)
