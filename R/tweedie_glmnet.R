@@ -1,6 +1,16 @@
 tweedie_glmnet <- function(formula, df,
                            p = NULL, phi = NULL, prior_weights = rep(1, nrow(df)), offset = NULL,
                            lambda = NULL, alpha = NULL) {
+  #' Tweedie elastic net
+  #'
+  #' @param formula a formula
+  #' @param df a data frame
+  #' @param p power
+  #' @param phi dispersion
+  #' @param  prior_weights weights appear in score equation
+  #' @param offset offset
+  #' @param  lambda penalty
+  #' @param alpha penalty of mixture
 
   formula_str <- deparse(substitute(formula))
 

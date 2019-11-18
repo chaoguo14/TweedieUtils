@@ -1,4 +1,4 @@
 exportPattern("^[[:alpha:]]+")
 
-importFrom("stats", "as.formula", "glm", "optimize")
+importFrom("stats", "model.matrix", "as.formula", "glm", "optimize")
 S3method(summary, tweedie_glm)
