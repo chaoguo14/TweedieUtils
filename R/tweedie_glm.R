@@ -9,7 +9,7 @@ tweedie_glm <- function(formula, df, p = NULL, phi = NULL, prior_weights = rep(1
   #'
   #' @param formula Formula of the model
   #' @param df A data frame. Each column should be either numeric or factor. The response column should be non-negative and numeric
-  #' @param p Power parameter of Tweedie distribution. It is supposed to be in [1, 2], but for numerical reason, it has to be in [1.1, 1.9]
+  #' @param p Power parameter of Tweedie distribution. It is supposed to be in [1, 2), but for numerical reason, it has to be in [1.1, 1.9]
   #' @param phi Dispersion parameter. It does not affect MLE of coefficients, but is useful in constructing confidence intervals.
   #' @param prior_weights The weights that appear in the score equation. For example, if the response is loss cost, then the prior_weights
   #' should be exposures. If the response is total loss, then the prior_weights should be $exposure^{p-1}$
@@ -27,32 +27,18 @@ tweedie_glm <- function(formula, df, p = NULL, phi = NULL, prior_weights = rep(1
 
   formula_str <- deparse(substitute(formula))
 
-  x_var_name <- all.vars(as.formula(formula_str))[-1]
-  y_var_name <- all.vars(as.formula(formula_str))[1]
-  for (var_name in c(x_var_name, y_var_name)) {
-    if (!var_name %in% colnames(df)) {
-      stop(paste0(var_name, " appears in the formula, but not found in df"))
-    }
-    if (!is.factor(df[[var_name]]) & !(is.numeric(df[[var_name]])) & !(is.integer(df[[var_name]]))) {
-      stop(paste0("Column ", var_name, " is neither numeric nor factor"))
-    }
-  }
-
-  if (any(df[[y_var_name]] < 0)) {
-    stop(paste0("Response should be non-negative for tweedie GLM"))
-  }
-
   if (is.null(p)) {
     print("Estimating power parameter......")
     out <- tweedie::tweedie.profile(formula = as.formula(formula_str),
-                           p.vec = seq(1.1, 1.9, by = 0.01),
+                           p.vec = seq(1.1, 1.8, by = 0.01),
                            link.power = 0,
                            data = df,
                            weights = prior_weights,
                            offset = offset,
-                           do.smooth = FALSE)
-    p <- out$p.max
+                           do.smooth = TRUE)
+    p <- out[['p']][which(out[['L']][is.finite(out[['L']])] == max(out[['L']][is.finite(out[['L']])]))]
   }
+
 
   model_obj <- glm(formula = as.formula(formula_str),
                    family = statmod::tweedie(var.power = p, link.power = 0),
