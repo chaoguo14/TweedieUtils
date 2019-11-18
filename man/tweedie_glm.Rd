@@ -12,7 +12,7 @@ tweedie_glm(formula, df, p = NULL, phi = NULL, prior_weights = rep(1,
 
 \item{df}{A data frame. Each column should be either numeric or factor. The response column should be non-negative and numeric}
 
-\item{p}{Power parameter of Tweedie distribution. It is supposed to be in [1, 2], but for numerical reason, it has to be in [1.1, 1.9]}
+\item{p}{Power parameter of Tweedie distribution. It is supposed to be in [1, 2), but for numerical reason, it has to be in [1.1, 1.9]}
 
 \item{phi}{Dispersion parameter. It does not affect MLE of coefficients, but is useful in constructing confidence intervals.}
 
